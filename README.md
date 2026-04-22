@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Coffeein
 
-## Getting Started
+Coffeein adalah aplikasi Next.js sederhana untuk menampilkan daftar menu kopi dan dessert, lengkap dengan filter varian dan modal produk.
 
-First, run the development server:
+## Fitur Utama
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Filter menu berdasarkan tipe produk:
+  - `All`
+  - `coffee`
+  - `iced_coffee`
+  - `tea`
+  - `dessert`
+- Modal produk muncul saat tombol `buy` pada kartu diklik.
+- Untuk produk non-dessert, modal menampilkan opsi varian gula:
+  - `normal`
+  - `less sugar`
+  - `no sugar`
+
+## Struktur Data
+
+Data menu disimpan di `Data/Data.ts` dengan tipe `Data` di `Data/type.ts`.
+
+```ts
+export interface Data {
+  id: number;
+  name: string;
+  price: number;
+  img: string;
+  type: string;
+  comp?: string[];
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Setiap item berisi:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `id`: identifier unik
+- `name`: nama produk
+- `price`: harga produk
+- `img`: path gambar dalam folder `public/caffe`
+- `type`: kategori produk
+- `comp`: optional ingredients
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Komponen Penting
 
-## Learn More
+### `app/page.tsx`
 
-To learn more about Next.js, take a look at the following resources:
+- Mengelola state `selectedVariant`
+- Meneruskan filter ke `Menu`
+- Menyediakan `Hero` yang memuat `MenuVariant`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### `components/Hero.tsx`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Menampilkan judul dan tombol scroll ke menu
+- Menyertakan `MenuVariant` untuk memilih kategori
 
-## Deploy on Vercel
+### `components/MenuVariant.tsx`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Menampilkan tab pilihan kategori
+- Mengirimkan nilai yang dipilih kembali ke halaman
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### `components/Menu.tsx`
+
+- Menyaring item berdasarkan `filterType`
+- Menampilkan kartu produk dengan `Card`
+- Menyisipkan `Modal` untuk detail produk
+
+### `components/Card.tsx`
+
+- Menampilkan setiap produk dalam bentuk kartu
+- Memanggil `openModal(item)` saat tombol `buy` diklik
+
+### `components/Modal.tsx`
+
+- Menampilkan detail produk yang dipilih:
+  - nama
+  - gambar
+  - harga
+  - ingredients
+- Jika produk bukan dessert, menampilkan pilihan gula
+
+## Folder Gambar
+
+Gambar ditempatkan di `public/caffe`, sehingga path yang digunakan di data harus dimulai dengan `/caffe/`.
+
+## Menjalankan Aplikasi
+
+Jalankan perintah berikut di root proyek:
+
+```bash
+pnpm dev
+```
+
+Buka `http://localhost:3000` di browser.
+
+## Tips Pengembangan
+
+- Tambahkan item baru ke `Data/Data.ts` jika ingin memperluas menu.
+- Pastikan gambar baru tersedia di `public/caffe`.
+- Sesuaikan `type` untuk memengaruhi filter varian.
+
+membuat halaman cart
+
+-- ketika logo di click arahkan use ke halaman cart
+-- gunakan localstorage sebagai penyimpanan data
+
+FEATURES
+
+--cart list
+--search product
+--locationts
+--filter product
+--size cup
+--sugarity
+--payment gate way
