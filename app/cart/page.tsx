@@ -1,14 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 
 export default function Cart() {
-  const cartItem = JSON.parse(localStorage.getItem("order") || "[]");
+  const [cartItem, setCartItem] = useState<any[]>([]);
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("order") || "[]");
+    setCartItem(items);
+  }, []);
+
   const removeItem = (id: number) => {
     const updatedCart = cartItem.filter((_: any, i: number) => i !== id);
     localStorage.setItem("order", JSON.stringify(updatedCart));
-    window.location.reload();
+    setCartItem(updatedCart);
   };
+
   return (
     <>
       {cartItem.map((item: any, id: number) => {

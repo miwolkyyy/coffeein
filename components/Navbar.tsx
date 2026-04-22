@@ -1,10 +1,17 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { SiBuymeacoffee } from "react-icons/si";
 
 function Navbar() {
-  const qtt = JSON.parse(localStorage.getItem("order") || "[]").reduce((acc: number, item: { quantity: number }) => acc + item.quantity, 0);
+  const [qtt, setQtt] = useState(0);
+
+  useEffect(() => {
+    const orders = JSON.parse(localStorage.getItem("order") || "[]");
+    const totalQty = orders.reduce((acc: number, item: { quantity: number }) => acc + item.quantity, 0);
+    setQtt(totalQty);
+  }, []);
 
   return (
     <>
